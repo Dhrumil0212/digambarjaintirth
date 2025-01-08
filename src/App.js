@@ -1,11 +1,9 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import StatesGrid from "./src/screens/StatesGrid";
-// import StatesGrid from "./";
-
-import PlacesGrid from "./src/screens/PlacesGrid";
-import PlaceDetails from "./src/screens/PlaceDetails";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import StatesGrid from './screens/StatesGrid';
+import PlacesGrid from './screens/PlacesGrid';
+import PlaceDetails from './screens/PlaceDetails';
 
 const Stack = createStackNavigator();
 

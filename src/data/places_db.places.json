@@ -1,0 +1,42 @@
+{
+  "states": [
+    {
+      "name": "Maharashtra",
+      "image": "https://images.unsplash.com/photo-1705356395716-9357ed3156e9?q=80&w=1687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "places": [
+        {
+          "id": "1",
+          "name": "Gateway of India",
+          "image": "https://images.unsplash.com/photo-1705356395716-9357ed3156e9?q=80&w=1687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "address": "Apollo Bandar, Mumbai",
+          "contact": "+91 123456789",
+          "historical_info": "Built in 1924 to commemorate King George V's visit to India.",
+          "tourism_info": "Famous waterfront landmark and popular tourist destination.",
+          "location": {
+            "latitude": 37.7749,
+            "longitude": -122.4194
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rajasthan",
+      "image": "https://img.peapix.com/cc7cb0188db44f9ab972bf2e5deb83c3_480.jpg",
+      "places": [
+        {
+          "id": "2",
+          "name": "Hawa Mahal",
+          "image": "https://example.com/hawamahal.jpg",
+          "address": "Jaipur, Rajasthan",
+          "contact": "+91 987654321",
+          "historical_info": "Built in 1799 as an extension of the Royal City Palace.",
+          "tourism_info": "Famous for its unique architecture and cultural significance.",
+          "location": {
+            "latitude": 37.7749,
+            "longitude": -122.4194
+          }
+        }
+      ]
+    }
+  ]
+}
