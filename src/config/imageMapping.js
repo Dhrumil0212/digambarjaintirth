@@ -15,4 +15,11 @@ export const imageMapping = {
       require("../../assets/Rajasthan/HawaMahal/2.jpeg"),
     ],
   },
+  Gujarat: {
+    "Siddhakshetra Tarangaji": [
+      require("../../assets/Gujarat/Tarangaji/1.jpg"),
+      require("../../assets/Gujarat/Tarangaji/2.jpg"),
+      require("../../assets/Gujarat/Tarangaji/3.jpg"),
+    ],
+  },
 };

@@ -37,6 +37,59 @@
           }
         }
       ]
+    },
+    {
+      "name": "Gujarat",
+      "image": "https://example.com/gujarat.jpg",
+      "places": [
+        {
+          "id": "3",
+          "name": "Siddhakshetra Tarangaji",
+          "image": "https://example.com/tarangaji.jpg",
+          "address": "Shri Digambar Jain Siddha Kshetra Kothi, Tarangaji, Mu. Post- Taranga Temple, Tehsil- Satlasana, Dist- Mehsana (Gujarat) Pin - 384350",
+          "contact": "Telephone: 02761-295073, 295273, Vidyasagar Tapovan: 02761-295430, 295485",
+          "facilities": {
+            "accommodation": {
+              "rooms_with_bathroom": 28,
+              "rooms_without_bathroom": 60,
+              "halls": 3,
+              "passenger_capacity": 155,
+              "guest_house": "X",
+              "total_capacity": 600
+            },
+            "dining_room": "Paid, Regular - For 150 Passengers at a Time",
+            "dispensary": "No",
+            "library": "Yes",
+            "school": "No"
+          },
+          "transportation": {
+            "railway_station": "Mehsana-Tarangahill-Taranga Temple - 12 km, Mehsana - 70 km, Palanpur - 75 km",
+            "bus_stand": "Tarangaji",
+            "easiest_way": "Road: Taranga Temple-Timba Highway - 4 km from Ahmedabad via Gandhinagar, Visnagar Kheralu - Timba",
+            "nearest_major_city": "Satlasana - 8 km, Ahmedabad - 150 km"
+          },
+          "management": {
+            "institution": "Shri Digambar Jain Siddha Kshetra Tarangaji Managing Committee",
+            "president": "Shri Vinodbhai Amritlal Bakharia (02764-220413)",
+            "minister": "Shri Hasmukhbhai V. Doshi (093756 10566)",
+            "manager": "Shri Rajnibhai (02761-295073)"
+          },
+          "importance": {
+            "temples_count": 21,
+            "mountains": "Two mountains - Kotishila (700 steps), Siddh Shila (600 steps). Provision for palanquin and lap.",
+            "historic_info": "21 temples including Koti Shila and Siddh Shila. Varadatta, Sayadatta, and Varang Kevali Muniraj attained salvation here. Main deity is Bhagwan Sambhavnath.",
+            "special_information": "Fair is held every year on Kartik Purnima. Sant Niwas includes 10 rooms and a discourse hall for 350 people."
+          },
+          "nearby_pilgrimage_sites": [
+            "Vidyasagar Tapovan - 2 km",
+            "Derol via Vadali - 60 km",
+            "Chintamani Parshvanath via Idar - 90 km",
+            "Umtaji - 40 km",
+            "Idar - 52 km",
+            "Atishya Kshetra-Bhiloda - 95 km"
+          ]
+        }
+      ]
     }
   ]
 }
