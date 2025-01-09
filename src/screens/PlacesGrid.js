@@ -10,12 +10,15 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
-import { getPlacesByState } from "../services/placesService";
+import { getPlacesByState } from "../services/placesService"; // Ensure this function is updated to provide image paths
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { HeartIcon } from "react-native-heroicons/solid";
+
+// Your imageMapping object should be imported here
+import { imageMapping } from "../config/imageMapping"; // Adjust the import based on where your imageMapping is located
 
 const PlacesGrid = ({ route }) => {
   const { stateName } = route.params;
@@ -24,11 +27,15 @@ const PlacesGrid = ({ route }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    // Fetch places and images based on stateName
     getPlacesByState(stateName).then((placesData) => {
-      const updatedPlaces = placesData.map((place) => ({
-        ...place,
-        image: place.image, // Fallback to placeholder image
-      }));
+      const updatedPlaces = placesData.map((place) => {
+        const images = imageMapping[stateName]?.[place.name] || []; // Default to empty if no images
+        return {
+          ...place,
+          image: images[0], // Use the first image from the mapping
+        };
+      });
       setPlaces(updatedPlaces);
     });
   }, [stateName]);
@@ -61,16 +68,29 @@ const PlacesGrid = ({ route }) => {
     </TouchableOpacity>
   );
 
+  // Sort places to display favorites at the top
+  const sortedPlaces = places.sort((a, b) => {
+    const isAFavorite = favorites.includes(a.name);
+    const isBFavorite = favorites.includes(b.name);
+    if (isAFavorite && !isBFavorite) {
+      return -1; // Move favorites to the top
+    }
+    if (!isAFavorite && isBFavorite) {
+      return 1; // Keep non-favorites below
+    }
+    return 0; // Keep the order unchanged if both are either favorite or non-favorite
+  });
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
       <SafeAreaView>
         <Text style={styles.heading}>{stateName} Places</Text>
         <FlatList
-          data={places}
+          data={sortedPlaces}
           renderItem={renderPlaceCard}
           numColumns={2}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()} // Ensure unique IDs for each item
           contentContainerStyle={styles.grid}
         />
       </SafeAreaView>
@@ -110,7 +130,7 @@ const styles = StyleSheet.create({
   cardImage: {
     width: "100%",
     height: hp(20),
-    resizeMode: "cover",
+    resizeMode: "cover", // Changed to 'cover' to make the image fill the container
   },
   cardContent: {
     flexDirection: "row",
