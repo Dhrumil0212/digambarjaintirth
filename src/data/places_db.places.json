@@ -90,6 +90,74 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Gujarat",
+      "image": "https://example.com/gujarat.jpg",
+      "places": [
+        {
+          "id": "4",
+          "name": "Siddhakshetra Pavagadh",
+          "image": "https://example.com/pavagadh.jpg",
+          "address": "Shri Pavaghadh Digambar Jain Siddhakshetra Kothi, Pavaghadh Tehsil - Halol, District - Panchmahal (Gujarat) Pin - 389360",
+          "contact": {
+            "telephone": ["02676-245624", "02676-245723", "09925982861"]
+          },
+          "facilities": {
+            "accommodation": {
+              "rooms_with_bathroom": 23,
+              "rooms_without_bathroom": 24,
+              "halls": 1,
+              "passenger_capacity": 30,
+              "ac_rooms": 2,
+              "total_capacity": 500
+            },
+            "dining_room": "Regular, Paid",
+            "old_age_home": "Yes",
+            "dispensary": "No",
+            "library": "No",
+            "school": "No"
+          },
+          "transportation": {
+            "railway_station": {
+              "vadodara": "50 km",
+              "godhra": "48 km"
+            },
+            "bus_stand": "Pavagadh",
+            "easiest_way": "By bus from Vadodara and Godhra",
+            "nearest_major_city": {
+              "vadodara": "50 km",
+              "godhra": "48 km"
+            }
+          },
+          "management": {
+            "institution": "Shri Digambar Jain Siddhakshetra Kothi Pavagadh Committee",
+            "president": "Shri Maheshchandra Maganlal (09825959368)",
+            "minister": "Shri Shirish Kumar Shantilal Shah (09428304293)",
+            "manager": "Shri Jinendra Kumar Anokhilal Jain (09925982861)"
+          },
+          "importance": {
+            "temples_count": 10,
+            "mountains": "The area includes a mountain with 1500 steps. A ropeway is available for the 3 km distance.",
+            "historic_info": "A historic site with ancient forts and palaces in ruins. The foothills are recognized as Champaner village. Five Kotimuni attained salvation here, including Lava and Kusha.",
+            "special_information": "A ropeway (paid) provides access to the mountain from Manchi, a distance of 3 km. A Vaishnav temple dedicated to Maa Kali is located on the hilltop. A fair is held annually on Magh Sud 12 and 13."
+          },
+          "nearby_pilgrimage_sites": [
+            "Mahuva - 225 km",
+            "Paliitana - 325 km",
+            "Girnar Ji - 480 km",
+            "Tarangaji - 300 km",
+            "Gandhinagar - Akshardham - 200 km",
+            "Dakorji - Ranchhodray Mandir - 125 km",
+            "Agas, Koba, Bedia - 30 km",
+            "Omkar Tirth (Basla) - 40 km"
+          ],
+          "annual_fair": {
+            "name": "Magh Sudi Fair",
+            "dates": "12th and 13th of Magh Sudi"
+          }
+        }
+      ]
     }
   ]
 }

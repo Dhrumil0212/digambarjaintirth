@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import { getStates } from "../services/placesService"; // Fetch state data
 import { imageMapping } from "../config/imageMapping"; // Import image mapping
+import { HeartIcon } from "react-native-heroicons/solid";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -19,6 +20,7 @@ import {
 
 const StatesGrid = () => {
   const [states, setStates] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -30,6 +32,14 @@ const StatesGrid = () => {
       setStates(updatedStates);
     });
   }, []);
+
+  const toggleFavorite = (stateName) => {
+    setFavorites((prev) =>
+      prev.includes(stateName)
+        ? prev.filter((name) => name !== stateName)
+        : [...prev, stateName]
+    );
+  };
 
   const renderStateCard = ({ item }) => (
     <TouchableOpacity
@@ -47,6 +57,12 @@ const StatesGrid = () => {
       )}
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{item.name}</Text>
+        <TouchableOpacity onPress={() => toggleFavorite(item.name)}>
+          <HeartIcon
+            size={24}
+            color={favorites.includes(item.name) ? "red" : "gray"}
+          />
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -67,7 +83,6 @@ const StatesGrid = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -114,13 +129,15 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
   },
   cardContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: wp(3),
   },
   cardTitle: {
     fontSize: wp(4.5),
     fontWeight: "600",
     color: "#343a40",
-    textAlign: "center",
   },
 });
 

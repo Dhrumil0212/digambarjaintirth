@@ -29,11 +29,12 @@ const PlacesGrid = ({ route }) => {
   useEffect(() => {
     // Fetch places and images based on stateName
     getPlacesByState(stateName).then((placesData) => {
+      // console.log(placesData);
       const updatedPlaces = placesData.map((place) => {
         const images = imageMapping[stateName]?.[place.name] || []; // Default to empty if no images
         return {
           ...place,
-          image: images[0], // Use the first image from the mapping
+          image: images[0] || null, // Use the first image from the mapping
         };
       });
       setPlaces(updatedPlaces);

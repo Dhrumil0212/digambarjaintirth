@@ -25,5 +25,10 @@ export const imageMapping = {
       require("../../assets/Gujarat/Tarangaji/2.jpg"),
       require("../../assets/Gujarat/Tarangaji/3.jpg"),
     ],
+    "Siddhakshetra Pavagadh": [
+      require("../../assets/Gujarat/Tarangaji/1.jpg"),
+      require("../../assets/Gujarat/Tarangaji/2.jpg"),
+      require("../../assets/Gujarat/Tarangaji/3.jpg"),
+    ],
   },
 };
