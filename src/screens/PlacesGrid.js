@@ -10,15 +10,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
-import { getPlacesByState } from "../services/placesService"; // Ensure this function is updated to provide image paths
+import { getPlacesByState } from "../services/getStateENG"; // Fetch places for the state
+import { imageMapping } from "../config/imageMapping"; // Import image mapping
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { HeartIcon } from "react-native-heroicons/solid";
-
-// Your imageMapping object should be imported here
-import { imageMapping } from "../config/imageMapping"; // Adjust the import based on where your imageMapping is located
 
 const PlacesGrid = ({ route }) => {
   const { stateName } = route.params;
@@ -27,17 +25,33 @@ const PlacesGrid = ({ route }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Fetch places and images based on stateName
     getPlacesByState(stateName).then((placesData) => {
-      // console.log(placesData);
-      const updatedPlaces = placesData.map((place) => {
-        const images = imageMapping[stateName]?.[place.name] || []; // Default to empty if no images
-        return {
-          ...place,
-          image: images[0] || null, // Use the first image from the mapping
-        };
-      });
-      setPlaces(updatedPlaces);
+      // console.log("Fetched places data:", placesData);
+
+      if (Array.isArray(placesData) && placesData.length > 0) {
+        const transformedData = placesData.map((placeName) => ({
+          "Name teerth": placeName,
+          image: imageMapping[stateName]?.[placeName]?.[0] || null,
+        }));
+
+        // console.log("Transformed places data:", transformedData);
+
+        const uniquePlacesMap = new Map();
+
+        transformedData.forEach((place) => {
+          const nameTeerth = place["Name teerth"];
+
+          if (nameTeerth && !uniquePlacesMap.has(nameTeerth)) {
+            uniquePlacesMap.set(nameTeerth, place);
+          }
+        });
+
+        const uniquePlaces = Array.from(uniquePlacesMap.values());
+        // console.log("Unique places after filtering duplicates:", uniquePlaces);
+        setPlaces(uniquePlaces);
+      } else {
+        // console.log("No valid places data found for this state");
+      }
     });
   }, [stateName]);
 
@@ -53,16 +67,22 @@ const PlacesGrid = ({ route }) => {
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() =>
-        navigation.navigate("PlaceDetails", { placeName: item.name })
+        navigation.navigate("PlaceDetails", { placeName: item["Name teerth"] })
       }
     >
-      <Image source={item.image} style={styles.cardImage} />
+      {item.image ? (
+        <Image source={item.image} style={styles.cardImage} />
+      ) : (
+        <View style={styles.placeholderImage}>
+          <Text style={styles.placeholderText}>Image not available</Text>
+        </View>
+      )}
       <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>{item.name}</Text>
-        <TouchableOpacity onPress={() => toggleFavorite(item.name)}>
+        <Text style={styles.cardTitle}>{item["Name teerth"]}</Text>
+        <TouchableOpacity onPress={() => toggleFavorite(item["Name teerth"])}>
           <HeartIcon
             size={24}
-            color={favorites.includes(item.name) ? "red" : "gray"}
+            color={favorites.includes(item["Name teerth"]) ? "red" : "gray"}
           />
         </TouchableOpacity>
       </View>
@@ -71,8 +91,8 @@ const PlacesGrid = ({ route }) => {
 
   // Sort places to display favorites at the top
   const sortedPlaces = places.sort((a, b) => {
-    const isAFavorite = favorites.includes(a.name);
-    const isBFavorite = favorites.includes(b.name);
+    const isAFavorite = favorites.includes(a["Name teerth"]);
+    const isBFavorite = favorites.includes(b["Name teerth"]);
     if (isAFavorite && !isBFavorite) {
       return -1; // Move favorites to the top
     }
@@ -85,14 +105,15 @@ const PlacesGrid = ({ route }) => {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
-      <SafeAreaView>
+      <SafeAreaView style={styles.safeAreaView}>
         <Text style={styles.heading}>{stateName} Places</Text>
         <FlatList
           data={sortedPlaces}
           renderItem={renderPlaceCard}
           numColumns={2}
-          keyExtractor={(item) => item.id.toString()} // Ensure unique IDs for each item
+          keyExtractor={(item) => item["Name teerth"]}
           contentContainerStyle={styles.grid}
+          style={styles.flatList} // Added to ensure proper height of the list
         />
       </SafeAreaView>
     </View>
@@ -105,16 +126,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f9fa",
     paddingHorizontal: wp(4),
   },
+  safeAreaView: {
+    flex: 1, // Allow SafeAreaView to take up the full height
+  },
   heading: {
     fontSize: wp(6),
     fontWeight: "bold",
-    textAlign: "center",
+    textAlign: "center", // Keep the heading centered
     marginVertical: hp(2),
     color: "#343a40",
   },
   grid: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-start", // Align grid items to the start (left-aligned)
+    justifyContent: "flex-start", // Ensure no space is wasted at the bottom
+    paddingBottom: hp(2), // Add bottom padding for better visual spacing
+  },
+  flatList: {
+    // flexGrow: 1, // Ensures the list grows to fill the available space
   },
   cardContainer: {
     backgroundColor: "#fff",
@@ -129,20 +157,37 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardImage: {
+    width: "100%", // Fill the card width
+    height: hp(20), // Increased image height for a bigger display
+    resizeMode: "cover", // Maintain aspect ratio and cover the space
+  },
+  placeholderImage: {
     width: "100%",
     height: hp(20),
-    resizeMode: "cover", // Changed to 'cover' to make the image fill the container
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#e9ecef",
+  },
+  placeholderText: {
+    color: "#6c757d",
+    fontSize: wp(4),
   },
   cardContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: wp(3),
+    flexDirection: "row", // Arrange title and heart icon horizontally
+    justifyContent: "space-between", // Space out title and heart icon
+    alignItems: "flex-start", // Ensure title is aligned properly
+    paddingHorizontal: wp(2),
+    paddingVertical: hp(1),
   },
   cardTitle: {
-    fontSize: wp(4.5),
+    fontSize: wp(4),
     fontWeight: "600",
     color: "#343a40",
+    textAlign: "left", // Align text to the left
+    flexWrap: "wrap", // Allow the title to wrap to the next line if it's too long
+    flex: 1, // Allow the title to take remaining space
+    marginRight: wp(2), // Provide some margin between the title and heart icon
+    paddingBottom: hp(0.5), // Allow some padding at the bottom of the title to prevent overlap with the icon
   },
 });
 

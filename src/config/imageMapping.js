@@ -20,12 +20,12 @@ export const imageMapping = {
     image: require("../../assets/Gujarat/1.jpg"),
     card: require("../../assets/Gujarat/1.jpg"),
 
-    "Siddhakshetra Tarangaji": [
+    "Tarangaji Siddhakshetra": [
       require("../../assets/Gujarat/Tarangaji/1.jpg"),
       require("../../assets/Gujarat/Tarangaji/2.jpg"),
       require("../../assets/Gujarat/Tarangaji/3.jpg"),
     ],
-    "Siddhakshetra Pavagadh": [
+    "Pawagarh Siddhakshetra": [
       require("../../assets/Gujarat/Tarangaji/1.jpg"),
       require("../../assets/Gujarat/Tarangaji/2.jpg"),
       require("../../assets/Gujarat/Tarangaji/3.jpg"),

@@ -10,14 +10,16 @@ import {
   Platform,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { getPlaceByName } from "../services/placesService";
+import { getPlaceByName } from "../services/getStateENG"; // Import service to fetch place details
 import { imageMapping } from "../config/imageMapping"; // Importing image mapping
-import { stateMapping } from "../config/stateMapping"; // Importing state mapping
 import { styles } from "../styles/placeStyles"; // Importing styles
+import { stateMapping } from "../config/stateMapping"; // Importing state mapping
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import finalData from "../data/final.json"; // Import finalData from final.json
 
 const PlaceDetails = ({ route }) => {
   const { placeName } = route.params;
@@ -50,42 +52,48 @@ const PlaceDetails = ({ route }) => {
     }
   };
 
-  // Recursive function to render fields and skip 'id' fields
-  const renderFields = (data) => {
-    return Object.keys(data).map((key) => {
-      // Skip 'id' field
-      if (key.toLowerCase() === "id") return null;
-      if (key.toLowerCase() === "image") return null;
-      if (key.toLowerCase() === "name") return null;
-      if (key.toLowerCase() === "location") return null;
+  // Function to render fields with translated keys and values for the given place
+  const renderFields = (placeName) => {
+    // Filter finalData for the place that matches the `placeName`
+    const placeData = finalData.Sheet1.filter(
+      (item) => item["Name teerth"] === placeName
+    );
 
-      const value = data[key];
+    if (placeData.length === 0) return null;
 
-      // If the value is an object or array, recursively render it
-      if (typeof value === "object" && value !== null) {
-        return (
-          <View key={key} style={styles.section}>
-            <Text style={styles.sectionTitle}>{key}:</Text>
-            {Array.isArray(value)
-              ? value.map((item, index) => (
-                  <View key={index} style={styles.value}>
-                    {typeof item === "object" ? (
-                      renderFields(item)
-                    ) : (
-                      <Text>{item}</Text>
-                    )}
-                  </View>
-                ))
-              : renderFields(value)}
-          </View>
-        );
+    // Create an object to track unique keys and values
+    const uniqueFields = {};
+
+    placeData.forEach((item) => {
+      // Skip irrelevant fields
+      if (
+        item["Key"] === "Formatted Text" ||
+        item["Key"] === "Original Value" ||
+        item["Key"] === "Tirth" ||
+        item["Key"] === "Name teerth" ||
+        item["Key"] === "Naam" ||
+        item["Key"] === "State" ||
+        item["Key"] === "Rajya"
+      ) {
+        return;
       }
 
-      // If it's a simple value (string or number), render it inside a <Text> component
+      // Use `Translated Key` as the unique identifier
+      const key = item["Translated Key"] || item["Key"];
+      const value = item["Translated Value"] || item["Original Value"];
+
+      // Only add unique fields (filter duplicates)
+      if (!uniqueFields[key]) {
+        uniqueFields[key] = value;
+      }
+    });
+
+    // Map over unique fields and render them
+    return Object.keys(uniqueFields).map((key) => {
       return (
         <View key={key} style={styles.section}>
           <Text style={styles.sectionTitle}>{key}:</Text>
-          <Text style={styles.value}>{value}</Text>
+          <Text style={styles.textContent}>{uniqueFields[key]}</Text>
         </View>
       );
     });
@@ -124,7 +132,7 @@ const PlaceDetails = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.heading}>{place.name}</Text>
+      <Text style={styles.heading}>{place["Name teerth"]}</Text>
 
       {/* Image Slider */}
       <ScrollView horizontal style={styles.imageSlider}>
@@ -139,7 +147,7 @@ const PlaceDetails = ({ route }) => {
 
       {/* Info Container */}
       <View style={styles.infoContainer}>
-        {renderFields(place)}
+        {renderFields(place["Name teerth"])}
 
         {/* Map View */}
         {place.location && (
@@ -163,26 +171,14 @@ const PlaceDetails = ({ route }) => {
                   latitude: place.location.latitude,
                   longitude: place.location.longitude,
                 }}
-                title={place.name}
-                description={place.address}
+                title={place["Name teerth"]}
+                description={place["Tirth"]}
               />
             </MapView>
           </TouchableOpacity>
         )}
       </View>
     </ScrollView>
-  );
-};
-
-// InfoSection Component for reusable text display
-const InfoSection = ({ title, content }) => {
-  return (
-    content && (
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{title}:</Text>
-        <Text style={styles.value}>{content}</Text>
-      </View>
-    )
   );
 };
 
