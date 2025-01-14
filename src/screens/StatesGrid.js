@@ -29,7 +29,7 @@ const StatesGrid = () => {
 
       const updatedStates = sortedStates.map((state) => ({
         ...state,
-        image: imageMapping[state.name]?.image || null,
+        image: imageMapping[state.name]?.image || null, // Get image URL from mapping
       }));
 
       setStates(updatedStates);
@@ -45,7 +45,7 @@ const StatesGrid = () => {
     >
       {/* Display the image or a placeholder */}
       {item.image ? (
-        <Image source={item.image} style={styles.cardImage} />
+        <Image source={{ uri: item.image }} style={styles.cardImage} />
       ) : (
         <View style={styles.placeholderImage}>
           <Text style={styles.placeholderText}>Image not available</Text>
@@ -61,7 +61,7 @@ const StatesGrid = () => {
     <View style={styles.container}>
       <StatusBar style="dark" />
       <SafeAreaView style={styles.safeAreaView}>
-        <Text style={styles.heading}>States of India</Text>
+        <Text style={styles.heading}>Bharat</Text>
         <FlatList
           data={states} // Use the sorted states state
           renderItem={renderStateCard}

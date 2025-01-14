@@ -19,38 +19,38 @@ import {
 import { HeartIcon } from "react-native-heroicons/solid";
 
 const PlacesGrid = ({ route }) => {
-  const { stateName } = route.params;
+  const { stateName } = route.params; // Get the state name passed via route
   const [places, setPlaces] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
     getPlacesByState(stateName).then((placesData) => {
-      // console.log("Fetched places data:", placesData);
-
       if (Array.isArray(placesData) && placesData.length > 0) {
-        const transformedData = placesData.map((placeName) => ({
-          "Name teerth": placeName,
-          image: imageMapping[stateName]?.[placeName]?.[0] || null,
-        }));
+        const transformedData = placesData.map((placeName) => {
+          // Decode the place name to handle '%20' as a space
+          const decodedPlaceName = decodeURIComponent(placeName);
+          // Get the image for the decoded place name
+          const placeImage =
+            imageMapping[stateName]?.[decodedPlaceName]?.[0] || null;
 
-        // console.log("Transformed places data:", transformedData);
+          return {
+            "Name teerth": decodedPlaceName,
+            image: placeImage ? decodeURIComponent(placeImage) : null, // Decode the image URL if necessary
+          };
+        });
 
         const uniquePlacesMap = new Map();
 
         transformedData.forEach((place) => {
           const nameTeerth = place["Name teerth"];
-
           if (nameTeerth && !uniquePlacesMap.has(nameTeerth)) {
             uniquePlacesMap.set(nameTeerth, place);
           }
         });
 
         const uniquePlaces = Array.from(uniquePlacesMap.values());
-        // console.log("Unique places after filtering duplicates:", uniquePlaces);
         setPlaces(uniquePlaces);
-      } else {
-        // console.log("No valid places data found for this state");
       }
     });
   }, [stateName]);
@@ -67,11 +67,14 @@ const PlacesGrid = ({ route }) => {
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() =>
-        navigation.navigate("PlaceDetails", { placeName: item["Name teerth"] })
+        navigation.navigate("PlaceDetails", {
+          placeName: item["Name teerth"],
+          stateName: stateName, // Pass stateName along with placeName
+        })
       }
     >
       {item.image ? (
-        <Image source={item.image} style={styles.cardImage} />
+        <Image source={{ uri: item.image }} style={styles.cardImage} />
       ) : (
         <View style={styles.placeholderImage}>
           <Text style={styles.placeholderText}>Image not available</Text>
@@ -106,14 +109,14 @@ const PlacesGrid = ({ route }) => {
     <View style={styles.container}>
       <StatusBar style="dark" />
       <SafeAreaView style={styles.safeAreaView}>
-        <Text style={styles.heading}>{stateName} Places</Text>
+        <Text style={styles.heading}>{stateName} Tirthkshetras</Text>
         <FlatList
           data={sortedPlaces}
           renderItem={renderPlaceCard}
           numColumns={2}
           keyExtractor={(item) => item["Name teerth"]}
           contentContainerStyle={styles.grid}
-          style={styles.flatList} // Added to ensure proper height of the list
+          style={styles.flatList}
         />
       </SafeAreaView>
     </View>
@@ -127,22 +130,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
   },
   safeAreaView: {
-    flex: 1, // Allow SafeAreaView to take up the full height
+    flex: 1,
   },
   heading: {
     fontSize: wp(6),
     fontWeight: "bold",
-    textAlign: "center", // Keep the heading centered
+    textAlign: "center",
     marginVertical: hp(2),
     color: "#343a40",
   },
   grid: {
-    alignItems: "flex-start", // Align grid items to the start (left-aligned)
-    justifyContent: "flex-start", // Ensure no space is wasted at the bottom
-    paddingBottom: hp(2), // Add bottom padding for better visual spacing
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    paddingBottom: hp(2),
   },
   flatList: {
-    // flexGrow: 1, // Ensures the list grows to fill the available space
+    flexGrow: 1,
   },
   cardContainer: {
     backgroundColor: "#fff",
@@ -157,9 +160,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardImage: {
-    width: "100%", // Fill the card width
-    height: hp(20), // Increased image height for a bigger display
-    resizeMode: "cover", // Maintain aspect ratio and cover the space
+    width: "100%",
+    height: hp(20),
+    resizeMode: "cover",
   },
   placeholderImage: {
     width: "100%",
@@ -173,9 +176,9 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
   },
   cardContent: {
-    flexDirection: "row", // Arrange title and heart icon horizontally
-    justifyContent: "space-between", // Space out title and heart icon
-    alignItems: "flex-start", // Ensure title is aligned properly
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     paddingHorizontal: wp(2),
     paddingVertical: hp(1),
   },
@@ -183,11 +186,11 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
     fontWeight: "600",
     color: "#343a40",
-    textAlign: "left", // Align text to the left
-    flexWrap: "wrap", // Allow the title to wrap to the next line if it's too long
-    flex: 1, // Allow the title to take remaining space
-    marginRight: wp(2), // Provide some margin between the title and heart icon
-    paddingBottom: hp(0.5), // Allow some padding at the bottom of the title to prevent overlap with the icon
+    textAlign: "left",
+    flexWrap: "wrap",
+    flex: 1,
+    marginRight: wp(2),
+    paddingBottom: hp(0.5),
   },
 });
 

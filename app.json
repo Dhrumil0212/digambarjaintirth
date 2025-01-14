@@ -19,11 +19,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dhrumil212.digambarjaintirth"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "sdkVersion": "49.0.0"
+    "sdkVersion": "49.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "8290d177-791b-469b-8adc-7b2fdd661e2b"
+      }
+    }
   }
 }
